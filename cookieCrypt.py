@@ -28,23 +28,22 @@ SWAP_VALUES = [
 ]
 
 
-def swap(char, offset = 3):
-  tmpSawp = np.array(SWAP_VALUES.copy())
+def swap(half_char, offset = 0):
+  tmpSwap = np.array(SWAP_VALUES.copy())
   newSwap = {}
-  # carry = tmpSawp[0][1]
   
-  col1 = tmpSawp[:, 0:1]
-  col2 = tmpSawp[:, 1:2]
+  col2 = list(tmpSwap[:, 1:2].tolist())
   
-  for i, item in enumerate(col1):
+  for i in range(offset):
+    col2 = [col2.pop(), *col2]
     
-    localOffset = i - offset
-    
-    if localOffset < 0:
-      localOffset = 15 - i
-    
-    print(hex(item[0]), hex(tmpSawp[localOffset, 1]))
+  for i, x in enumerate(col2):
+    col2[i] = x[0]
+    newSwap[int(tmpSwap[i, 0])] = int(x[0])
   
+  print(newSwap)
+  
+  return newSwap[int(half_char)]
   
 
 def unswap(char, offset):
@@ -60,11 +59,15 @@ def encrypt(message: bytearray, key: bytes):
   print(keySection1.hexdigest())
 
   output = []
+  
+  splitChars = []
 
   for char in message:
     print(char.to_bytes().hex())
 
-  print(swap(message[2].to_bytes().hex()))
+  print()
+
+  print(swap(message[2].to_bytes().hex()[0]))
 
 
   return "Done"
